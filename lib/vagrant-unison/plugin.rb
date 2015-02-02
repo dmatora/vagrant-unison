@@ -16,7 +16,7 @@ module VagrantPlugins
       name "Unison"
       description <<-DESC
       This plugin syncs files over SSH from a local folder
-      to your Vagrant VM (local or on AWS). 
+      to your Vagrant VM (local or on AWS).
       DESC
 
       config "sync" do
@@ -92,7 +92,7 @@ module VagrantPlugins
         # Set the logging level on all "vagrant" namespaced
         # logs as long as we have a valid level.
         if level
-          logger = Log4r::Logger.new("vagrant_sync")
+          logger = Log4r::Logger.new("vagrant_unison")
           logger.outputters = Log4r::Outputter.stderr
           logger.level = level
           logger = nil

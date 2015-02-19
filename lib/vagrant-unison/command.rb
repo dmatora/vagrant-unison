@@ -159,7 +159,7 @@ module VagrantPlugins
 
         # Unison over to the guest path using the SSH info
         ignore = machine.config.sync.ignore ? ' -ignore "'+machine.config.sync.ignore+'"' : '';
-        command = 'unison -terse -repeat 1 -sshargs "'+rsh+'" hosts '+"ssh://#{ssh_info[:username]}@#{ssh_info[:host]}/#{guestpath}"+ignore
+        command = 'unison -terse -repeat 1 -sshargs "'+rsh+'" '+hostpath+' '+"ssh://#{ssh_info[:username]}@#{ssh_info[:host]}/#{guestpath}"+ignore
         @env.ui.info "Running #{command}"
 
         system(command)

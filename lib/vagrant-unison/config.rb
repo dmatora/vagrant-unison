@@ -56,8 +56,8 @@ module VagrantPlugins
       def validate(machine)
         errors = []
 
-        errors << I18n.t("vagrant_sync.config.host_folder_required") if @host_folder.nil?
-        errors << I18n.t("vagrant_sync.config.guest_folder_required") if @guest_folder.nil?
+        errors << I18n.t("vagrant_unison.config.host_folder_required") if @host_folder.nil?
+        errors << I18n.t("vagrant_unison.config.guest_folder_required") if @guest_folder.nil?
 
         { "Unison" => errors }
       end

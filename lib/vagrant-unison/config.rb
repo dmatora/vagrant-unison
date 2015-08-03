@@ -18,6 +18,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :ignore
 
+      # Pattern of files to follow.
+      #
+      # @return [String]
+      attr_accessor :follow
+
       # Repeat speed.
       #
       # @return [String]
@@ -27,6 +32,7 @@ module VagrantPlugins
         @host_folder      = UNSET_VALUE
         @remote_folder    = UNSET_VALUE
         @ignore           = UNSET_VALUE
+        @follow           = UNSET_VALUE
         @repeat           = UNSET_VALUE
       end
 
@@ -47,6 +53,7 @@ module VagrantPlugins
         @host_folder    = nil if @host_folder    == UNSET_VALUE
         @guest_folder   = nil if @guest_folder   == UNSET_VALUE
         @ignore         = nil if @ignore         == UNSET_VALUE
+        @follow         = nil if @follow         == UNSET_VALUE
         @repeat         = 1   if @repeat         == UNSET_VALUE
 
         # Mark that we finalized

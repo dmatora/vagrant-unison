@@ -13,6 +13,7 @@ describe VagrantPlugins::Unison::Config do
     its("host_folder")     { should be_nil }
     its("guest_folder")    { should be_nil }
     its("ignore")          { should be_nil }
+    its("follow")          { should be_nil }
   end
 
   describe "overriding defaults" do

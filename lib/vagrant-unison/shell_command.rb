@@ -31,6 +31,7 @@ module VagrantPlugins
           terse_arg,
           repeat_arg,
           ignore_arg,
+          follow_arg,
           ['-sshargs', %("#{@ssh_command.command}")],
         ].flatten.compact
       end
@@ -41,6 +42,10 @@ module VagrantPlugins
 
       def ignore_arg
         ['-ignore', %("#{@machine.config.sync.ignore}")] if @machine.config.sync.ignore
+      end
+
+      def follow_arg
+        ['-follow', %("#{@machine.config.sync.follow}")] if @machine.config.sync.follow
       end
 
       def repeat_arg

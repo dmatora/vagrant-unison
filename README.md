@@ -15,7 +15,7 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
      * On Mac you can install this with Homebrew:  `brew install unison` (on Yosemite you will have to use https://rudix-mountainlion.googlecode.com/files/unison-2.40.102-0.pkg)
      * On Unix (Ubuntu) install using `sudo apt-get install unison`
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
-1. Install using standard Vagrant 1.1+ plugin installation methods. 
+1. Install using standard Vagrant 1.1+ plugin installation methods.
 ```
 $ vagrant plugin install vagrant-unison
 ```
@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
   config.sync.host_folder = "src/"  #relative to the folder your Vagrantfile is in
   config.sync.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
   config.sync.ignore = "Name {.idea,.DS_Store}"
+  config.sync.follow = "Name *" #follow all symlinks
 
 end
 ```
@@ -36,7 +37,7 @@ end
 
 Run `vagrant sync` to start watching the local_folder for changes, and syncing these to your vagrang VM.
 
-Under the covers this uses your system installation of [Unison](http://www.cis.upenn.edu/~bcpierce/unison/), 
+Under the covers this uses your system installation of [Unison](http://www.cis.upenn.edu/~bcpierce/unison/),
 which must be installed in your path.
 
 ## Start syncing Folders in repeat mode
@@ -50,7 +51,7 @@ Run `vagrant sync-interact` to start in interactive mode that allows solving con
 ## Cleanup unison database
 When you get
 ```
-Fatal error: Warning: inconsistent state.  
+Fatal error: Warning: inconsistent state.
 The archive file is missing on some hosts.
 For safety, the remaining copies should be deleted.
   Archive arb126d8de1ef26a835b94cf51975c530f on host blablabla.local should be DELETED
@@ -83,6 +84,6 @@ creating a `Vagrantfile` in the top level of this directory (it is gitignored)
 that uses it, and uses bundler to execute Vagrant:
 
 ```
-$ bundle exec vagrant up 
+$ bundle exec vagrant up
 $ bundle exec vagrant sync
 ```

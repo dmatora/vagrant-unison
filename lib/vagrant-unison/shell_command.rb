@@ -27,6 +27,7 @@ module VagrantPlugins
           'unison',
           @paths.host,
           @ssh_command.uri,
+          ['-ui', 'text'],
           batch_arg,
           terse_arg,
           repeat_arg,

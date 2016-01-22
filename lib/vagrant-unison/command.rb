@@ -113,7 +113,7 @@ module VagrantPlugins
 
           command = "rm -rf ~/.unison"
           @env.ui.info "Running #{command} on guest VM"
-          machine.communicate.sudo(command)
+          machine.communicate.execute(command)
         end
 
         0

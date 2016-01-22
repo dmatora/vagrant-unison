@@ -40,11 +40,11 @@ module VagrantPlugins
       end
 
       def ignore_arg
-        ['-ignore', %("#{@machine.config.sync.ignore}")] if @machine.config.sync.ignore
+        ['-ignore', %("#{@machine.config.unison.ignore}")] if @machine.config.unison.ignore
       end
 
       def repeat_arg
-        ['-repeat', @machine.config.sync.repeat] if repeat && @machine.config.sync.repeat
+        ['-repeat', @machine.config.unison.repeat] if repeat && @machine.config.unison.repeat
       end
 
       def terse_arg

@@ -7,12 +7,12 @@ module VagrantPlugins
       end
 
       def guest
-        @machine.config.sync.guest_folder
+        @machine.config.unison.guest_folder
       end
 
       def host
         @host ||= begin
-          path = File.expand_path(@machine.config.sync.host_folder, @env.root_path)
+          path = File.expand_path(@machine.config.unison.host_folder, @env.root_path)
 
           # Make sure there is a trailing slash on the host path to
           # avoid creating an additional directory with rsync

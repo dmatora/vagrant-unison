@@ -43,7 +43,7 @@ module VagrantPlugins
           Vagrant::Util::Busy.busy(callback) do
             listener.start
             queue.pop
-            listener.stop if listener.listen?
+            listener.stop if listener.paused? || listener.processing?
           end
         end
 

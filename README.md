@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 
   config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
   config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
-  config.unison.ignore = "Name {.idea,.DS_Store}"
+  config.unison.ignore = "Name {.DS_Store,.git,node_modules}"
 
 end
 ```

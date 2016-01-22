@@ -34,6 +34,15 @@ module VagrantPlugins
         Command
       end
 
+      command "sync-once" do
+        setup_logging
+        setup_i18n
+
+        #Return the command
+        require_relative "command"
+        CommandOnce
+      end
+
       command "sync-repeat" do
         # Setup logging and i18n
         setup_logging

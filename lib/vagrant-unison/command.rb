@@ -76,6 +76,28 @@ module VagrantPlugins
       end
     end
 
+    class CommandOnce < Vagrant.plugin("2", :command)
+      include UnisonSync
+
+      def execute
+        with_target_vms do |machine|
+          execute_sync_command(machine) do |command|
+            command.repeat = false
+            command.terse = true
+            command.batch = true
+            command = command.to_s
+
+            @env.ui.info "Running unison once"
+            @env.ui.info "    #{command}"
+
+            system(command)
+          end
+        end
+
+        0
+      end
+    end
+
     class CommandRepeat < Vagrant.plugin("2", :command)
       include UnisonSync
 

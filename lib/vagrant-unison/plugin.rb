@@ -19,12 +19,12 @@ module VagrantPlugins
       to your Vagrant VM (local or on AWS). 
       DESC
 
-      config "sync" do
+      config "unison" do
         require_relative "config"
         Config
       end
 
-      command "sync" do
+      command "unison-sync" do
         # Setup logging and i18n
         setup_logging
         setup_i18n
@@ -34,7 +34,7 @@ module VagrantPlugins
         Command
       end
 
-      command "sync-once" do
+      command "unison-sync-once" do
         setup_logging
         setup_i18n
 
@@ -43,7 +43,18 @@ module VagrantPlugins
         CommandOnce
       end
 
-      command "sync-polling" do
+      command "unison-sync-interact" do
+        # Setup logging and i18n
+        setup_logging
+        setup_i18n
+
+        #Return the command
+        require_relative "command"
+        CommandInteract
+      end
+
+
+      command "unison-sync-polling" do
         # Setup logging and i18n
         setup_logging
         setup_i18n
@@ -53,7 +64,7 @@ module VagrantPlugins
         CommandPolling
       end
 
-      command "sync-cleanup" do
+      command "unison-cleanup" do
         # Setup logging and i18n
         setup_logging
         setup_i18n
@@ -61,16 +72,6 @@ module VagrantPlugins
         #Return the command
         require_relative "command"
         CommandCleanup
-      end
-
-      command "sync-interact" do
-        # Setup logging and i18n
-        setup_logging
-        setup_i18n
-
-        #Return the command
-        require_relative "command"
-        CommandInteract
       end
 
       # This initializes the internationalization strings.
@@ -101,7 +102,7 @@ module VagrantPlugins
         # Set the logging level on all "vagrant" namespaced
         # logs as long as we have a valid level.
         if level
-          logger = Log4r::Logger.new("vagrant_sync")
+          logger = Log4r::Logger.new("vagrant_unison")
           logger.outputters = Log4r::Outputter.stderr
           logger.level = level
           logger = nil

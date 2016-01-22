@@ -97,7 +97,7 @@ module VagrantPlugins
       end
     end
 
-    class CommandRepeat < Vagrant.plugin("2", :command)
+    class CommandPolling < Vagrant.plugin("2", :command)
       include UnisonSync
 
       def execute

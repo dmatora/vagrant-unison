@@ -43,14 +43,14 @@ module VagrantPlugins
         CommandOnce
       end
 
-      command "sync-repeat" do
+      command "sync-polling" do
         # Setup logging and i18n
         setup_logging
         setup_i18n
 
         #Return the command
         require_relative "command"
-        CommandRepeat
+        CommandPolling
       end
 
       command "sync-cleanup" do

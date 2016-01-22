@@ -82,9 +82,8 @@ module VagrantPlugins
       def execute
         with_target_vms do |machine|
           execute_sync_command(machine) do |command|
-            command.repeat = false
-            command.terse = true
             command.batch = true
+            command.terse = true
             command = command.to_s
 
             @env.ui.info "Running unison once"

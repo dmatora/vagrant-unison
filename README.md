@@ -24,9 +24,9 @@ $ vagrant plugin install vagrant-unison
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
-  config.sync.host_folder = "src/"  #relative to the folder your Vagrantfile is in
-  config.sync.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
-  config.sync.ignore = "Name {.idea,.DS_Store}"
+  config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
+  config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
+  config.unison.ignore = "Name {.idea,.DS_Store}"
 
 end
 ```
@@ -34,18 +34,26 @@ end
 
 ## Start syncing Folders
 
-Run `vagrant sync` to start watching the local_folder for changes, and syncing these to your vagrang VM.
+Run `vagrant unison-sync-once` to run a single, non-interactive sync and then exit.
+
+Run `vagrant unison-sync` to sync then start watching the local_folder for changes, and syncing these to your vagrang VM.
 
 Under the covers this uses your system installation of [Unison](http://www.cis.upenn.edu/~bcpierce/unison/), 
 which must be installed in your path.
 
-## Start syncing Folders in repeat mode
+## Start syncing Folders with polling (unison repeat mode)
 
-Run `vagrant sync-repeat` to start in bidirect monitor (repeat) mode.
+Run `vagrant unison-sync-polling` to start in bidirect monitor (repeat) mode - every second unison checks for changes on either side and syncs them.
 
-## Start syncing Folders in interactive mode
+## Sync in interactive mode
 
-Run `vagrant sync-interact` to start in interactive mode that allows solving conflicts.
+Run `vagrant unison-sync-interactive` to start in interactive mode. The first time
+it will ask what to do for every top-level file & directory, otherwise is asks
+about changes. It allows solving conflicts in various ways. Press "?" in
+interactive mode to see options for resolving.
+
+This is a useful tool when the automatic sync sees a change in a file on both
+sides and skips it.
 
 ## Cleanup unison database
 When you get
@@ -59,7 +67,7 @@ Please delete archive files as appropriate and try again
 or invoke Unison with -ignorearchives flag.
 ```
 
-Run `vagrant sync-cleanup` to clear Archive from ~/Library/Application Support/Unison/ and files from host folder.
+Run `vagrant unison-cleanup` to clear Archive from ~/Library/Application Support/Unison/ and files from host folder.
 Running Unison with -ignorearchives flag is a bad idea, since it will produce conflicts.
 
 ## Development
@@ -84,5 +92,20 @@ that uses it, and uses bundler to execute Vagrant:
 
 ```
 $ bundle exec vagrant up 
-$ bundle exec vagrant sync
+$ bundle exec vagrant unison-sync
+```
+
+Or, install the plugin from your local build to use with an existing project's
+Vagrantfile on your machine.
+
+Build the plugin with
+
+```
+rake build
+```
+
+Now you'll see the built gem in a pkg directory. Install it with
+
+```
+vagrant plugin install pkg/vagrant-unison-VERSION.gem
 ```

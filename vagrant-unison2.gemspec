@@ -1,5 +1,5 @@
 $:.unshift File.expand_path("../lib", __FILE__)
-require "vagrant-unison/version"
+require "vagrant-unison2/version"
 
 Gem::Specification.new do |s|
   s.name          = "vagrant-unison2"

@@ -1,4 +1,4 @@
-require "vagrant-unison/config"
+require "vagrant-unison2/config"
 
 describe VagrantPlugins::Unison::Config do
   let(:instance) { described_class.new }

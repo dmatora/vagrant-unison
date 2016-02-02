@@ -1,3 +1,9 @@
+# 1.0.2 (Feb 2016)
+* fix the cleanup command to delete contents of directory in Vagrant but not the directory itself, because deleteing the directory can mess up e.g. a docker container that has that directory mounted.
+
+# 1.0.1
+* Small bugfix release
+
 # 1.0.0 (Jan 2016)
 
 * Breaking commit on dcosson fork

@@ -128,7 +128,7 @@ module VagrantPlugins
           @env.ui.info "Running #{command} on host"
           system(command)
 
-          command = "rm -rf #{guest_path}"
+          command = "rm -rf #{guest_path}/*"
           @env.ui.info "Running #{command} on guest VM"
           machine.communicate.sudo(command)
 

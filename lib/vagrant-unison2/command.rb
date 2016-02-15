@@ -128,8 +128,8 @@ module VagrantPlugins
           @env.ui.info "Running #{command} on host"
           system(command)
 
-          command = "rm -rf #{guest_path}/*"
-          @env.ui.info "Running #{command} on guest VM"
+          command = "rm -rf #{guest_path}/* #{guest_path}/..?* #{guest_path}/.[!.]*"
+          @env.ui.info "Running #{command} on guest VM (delete all files from directory including hidden ones)"
           machine.communicate.sudo(command)
 
           command = "rm -rf ~/.unison"

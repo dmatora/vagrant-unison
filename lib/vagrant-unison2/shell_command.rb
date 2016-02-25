@@ -23,7 +23,7 @@ module VagrantPlugins
       private
 
       def args
-        [
+        _args = [
           'unison',
           @paths.host,
           @ssh_command.uri,
@@ -33,6 +33,7 @@ module VagrantPlugins
           ignore_arg,
           ['-sshargs', %("#{@ssh_command.command}")],
         ].flatten.compact
+        _args
       end
 
       def batch_arg

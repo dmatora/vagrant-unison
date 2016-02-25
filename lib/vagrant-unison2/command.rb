@@ -109,7 +109,25 @@ module VagrantPlugins
 
             @env.ui.info "Running #{command}"
 
-            system(command)
+            # Re-run on a crash.
+            # On a sigint, wait 2 seconds before respawning command.
+            # If INT comes in again while waiting, program exits.
+            # If INT comes in after we've respanwned,
+            # will bring us back to this trap handler.
+            exit_on_next_sigint = false
+            while true
+              begin
+                sleep 2 if exit_on_next_sigint
+                exit_on_next_sigint = false
+                system(command)
+              rescue Interrupt
+                exit 1 if exit_on_next_sigint
+                @env.ui.info '** Hit Ctrl + C again to kill. **'
+                exit_on_next_sigint = true
+              rescue Exception
+                  @env.ui.info '** Sync crashed. Respawning. Hit Ctrl + C twice to kill. **'
+              end
+            end
           end
         end
 

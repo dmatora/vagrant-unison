@@ -1,9 +1,9 @@
 module VagrantPlugins
   module Unison
     class ShellCommand
-      def initialize machine, paths, ssh_command
+      def initialize machine, unison_paths, ssh_command
         @machine = machine
-        @paths = paths
+        @unison_paths = unison_paths
         @ssh_command = ssh_command
       end
 
@@ -25,8 +25,8 @@ module VagrantPlugins
       def args
         _args = [
           'unison',
-          @paths.host,
-          @ssh_command.uri,
+          @unison_paths.host,
+          @ssh_command.uri(@unison_paths),
           batch_arg,
           terse_arg,
           repeat_arg,

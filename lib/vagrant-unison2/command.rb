@@ -99,15 +99,20 @@ module VagrantPlugins
 
     class CommandPolling < Vagrant.plugin("2", :command)
       include UnisonSync
+      attr_accessor :bg_thread
 
       def execute
         with_target_vms do |machine|
+          puts "launching thread"
+          @bg_thread = watch_vm_for_memory_leak(machine)
+          sleep 3
+
           execute_sync_command(machine) do |command|
             command.repeat = true
             command.terse = true
             command = command.to_s
 
-            @env.ui.info "Running #{command}"
+            # @env.ui.info "Running #{command}"
 
             # Re-run on a crash.
             # On a sigint, wait 2 seconds before respawning command.
@@ -130,8 +135,31 @@ module VagrantPlugins
             end
           end
         end
-
         0
+      end
+
+      def watch_vm_for_memory_leak(machine)
+        ssh_command = SshCommand.new(machine)
+        mem_cap_mb = 50
+        Thread.new(ssh_command.command, mem_cap_mb) do |ssh_command_text, mem_cap_mb|
+          while true
+            total_mem = `ssh vagrant@127.0.0.1 #{ssh_command.command} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
+            _unison_proc_returnval = `ssh vagrant@127.0.0.1 #{ssh_command.command} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
+            if _unison_proc_returnval == ''
+              puts "Unison not running in VM"
+              sleep 5
+              next
+            end
+            pid, mem_pct_unison = _unison_proc_returnval.strip.split(' ')
+            mem_unison = (total_mem.to_f * mem_pct_unison.to_f/100).round(1)
+            # puts "Unison running as #{pid} using #{mem_unison} mb"
+            if mem_unison > mem_cap_mb
+              puts "Unison using #{mem_unison} mb memory is over cap, restarting"
+              `ssh vagrant@127.0.0.1 #{ssh_command.command} kill -HUP #{pid}`
+            end
+            sleep 5
+          end
+        end
       end
     end
 

@@ -103,9 +103,7 @@ module VagrantPlugins
 
       def execute
         with_target_vms do |machine|
-          puts "launching thread"
           @bg_thread = watch_vm_for_memory_leak(machine)
-          sleep 3
 
           execute_sync_command(machine) do |command|
             command.repeat = true
@@ -126,7 +124,10 @@ module VagrantPlugins
                 exit_on_next_sigint = false
                 system(command)
               rescue Interrupt
-                exit 1 if exit_on_next_sigint
+                if exit_on_next_sigint
+                  Thread.kill(@bg_thread) if @bg_thread
+                  exit 1
+                end
                 @env.ui.info '** Hit Ctrl + C again to kill. **'
                 exit_on_next_sigint = true
               rescue Exception
@@ -140,24 +141,23 @@ module VagrantPlugins
 
       def watch_vm_for_memory_leak(machine)
         ssh_command = SshCommand.new(machine)
-        mem_cap_mb = 50
-        Thread.new(ssh_command.command, mem_cap_mb) do |ssh_command_text, mem_cap_mb|
+        unison_mem_cap_mb = 50
+        Thread.new(ssh_command.command, unison_mem_cap_mb) do |ssh_command_text, mem_cap_mb|
           while true
+            sleep 30
             total_mem = `ssh vagrant@127.0.0.1 #{ssh_command.command} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
             _unison_proc_returnval = `ssh vagrant@127.0.0.1 #{ssh_command.command} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
             if _unison_proc_returnval == ''
               puts "Unison not running in VM"
-              sleep 5
               next
             end
             pid, mem_pct_unison = _unison_proc_returnval.strip.split(' ')
             mem_unison = (total_mem.to_f * mem_pct_unison.to_f/100).round(1)
             # puts "Unison running as #{pid} using #{mem_unison} mb"
             if mem_unison > mem_cap_mb
-              puts "Unison using #{mem_unison} mb memory is over cap, restarting"
-              `ssh vagrant@127.0.0.1 #{ssh_command.command} kill -HUP #{pid}`
+              puts "Unison using #{mem_unison} mb memory is over limit of #{mem_cap_mb}, restarting"
+              `ssh vagrant@127.0.0.1 #{ssh_command.command} kill -HUP #{pid} 2>/dev/null`
             end
-            sleep 5
           end
         end
       end

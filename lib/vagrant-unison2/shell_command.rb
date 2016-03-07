@@ -31,7 +31,7 @@ module VagrantPlugins
           terse_arg,
           repeat_arg,
           ignore_arg,
-          ['-sshargs', %("#{@ssh_command.command}")],
+          ['-sshargs', %("#{@ssh_command.ssh_args}")],
         ].flatten.compact
         _args
       end

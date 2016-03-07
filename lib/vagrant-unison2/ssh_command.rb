@@ -5,15 +5,15 @@ module VagrantPlugins
         @machine = machine
       end
 
-      def command2
+      def ssh
         %W(
           ssh
           vagrant@127.0.0.1
-          #{command}
+          #{ssh_args}
         ).compact.join(' ')
       end
 
-      def command
+      def ssh_args
         %W(
           -p #{@machine.ssh_info[:port]}
           #{proxy_command}

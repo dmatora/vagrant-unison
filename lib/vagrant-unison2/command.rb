@@ -141,8 +141,8 @@ module VagrantPlugins
 
       def watch_vm_for_memory_leak(machine)
         ssh_command = SshCommand.new(machine)
-        unison_mem_cap_mb = 50
-        Thread.new(ssh_command.command2, unison_mem_cap_mb) do |ssh_command_text, mem_cap_mb|
+        unison_mem_cap_mb = 100
+        Thread.new(ssh_command.ssh, unison_mem_cap_mb) do |ssh_command_text, mem_cap_mb|
           while true
             sleep 2
             total_mem = `#{ssh_command_text} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
@@ -153,7 +153,8 @@ module VagrantPlugins
             end
             pid, mem_pct_unison = _unison_proc_returnval.strip.split(' ')
             mem_unison = (total_mem.to_f * mem_pct_unison.to_f/100).round(1)
-            puts "Unison running as #{pid} using #{mem_unison} mb"
+            # Debugging: uncomment to log every loop tick
+            # puts "Unison running as #{pid} using #{mem_unison} mb"
             if mem_unison > mem_cap_mb
               puts "Unison using #{mem_unison} mb memory is over limit of #{mem_cap_mb}, restarting"
               `#{ssh_command_text} kill -HUP #{pid} 2>/dev/null`

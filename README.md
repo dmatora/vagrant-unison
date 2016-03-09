@@ -1,4 +1,4 @@
-# Vagrant Unison Plugin
+# Vagrant Unison 2 Plugin
 
 This is a [Vagrant](http://www.vagrantup.com) 1.1+ plugin that syncs files over SSH from a local folder
 to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://www.cis.upenn.edu/~bcpierce/unison/)
@@ -7,12 +7,12 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
 
 ## Features
 
-* Unisoned folder support via `unison` over `ssh` -> will work with any vagrant provider, eg Virtualbox or AWS.
+* Unisoned folder support via `unison` over `ssh` -> will work with any vagrant provider, eg Virtualbox or AWS, though it's most tested on a local VM via Virtualbox.
 
 ## Usage
 
 1. You must already have [Unison](http://www.cis.upenn.edu/~bcpierce/unison/) installed and in your path.
-     * On Mac you can install this with Homebrew:  `brew install unison` (on Yosemite you will have to use https://rudix-mountainlion.googlecode.com/files/unison-2.40.102-0.pkg)
+     * On Mac you can install this with Homebrew:  `brew install unison`
      * On Unix (Ubuntu) install using `sudo apt-get install unison`
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
 1. Install using standard Vagrant 1.1+ plugin installation methods. 

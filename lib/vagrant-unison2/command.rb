@@ -99,9 +99,12 @@ module VagrantPlugins
 
     class CommandPolling < Vagrant.plugin("2", :command)
       include UnisonSync
+      attr_accessor :bg_thread
 
       def execute
         with_target_vms do |machine|
+          @bg_thread = watch_vm_for_memory_leak(machine)
+
           execute_sync_command(machine) do |command|
             command.repeat = true
             command.terse = true
@@ -121,7 +124,10 @@ module VagrantPlugins
                 exit_on_next_sigint = false
                 system(command)
               rescue Interrupt
-                exit 1 if exit_on_next_sigint
+                if exit_on_next_sigint
+                  Thread.kill(@bg_thread) if @bg_thread
+                  exit 1
+                end
                 @env.ui.info '** Hit Ctrl + C again to kill. **'
                 exit_on_next_sigint = true
               rescue Exception
@@ -130,8 +136,31 @@ module VagrantPlugins
             end
           end
         end
-
         0
+      end
+
+      def watch_vm_for_memory_leak(machine)
+        ssh_command = SshCommand.new(machine)
+        unison_mem_cap_mb = 100
+        Thread.new(ssh_command.ssh, unison_mem_cap_mb) do |ssh_command_text, mem_cap_mb|
+          while true
+            sleep 15
+            total_mem = `#{ssh_command_text} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
+            _unison_proc_returnval = `#{ssh_command_text} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
+            if _unison_proc_returnval == ''
+              puts "Unison not running in VM"
+              next
+            end
+            pid, mem_pct_unison = _unison_proc_returnval.strip.split(' ')
+            mem_unison = (total_mem.to_f * mem_pct_unison.to_f/100).round(1)
+            # Debugging: uncomment to log every loop tick
+            # puts "Unison running as #{pid} using #{mem_unison} mb"
+            if mem_unison > mem_cap_mb
+              puts "Unison using #{mem_unison} mb memory is over limit of #{mem_cap_mb}, restarting"
+              `#{ssh_command_text} kill -HUP #{pid} 2>/dev/null`
+            end
+          end
+        end
       end
     end
 

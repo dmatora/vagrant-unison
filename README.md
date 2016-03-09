@@ -32,18 +32,20 @@ end
 ```
 1. Start up your starting your vagrant box as normal (eg: `vagrant up`)
 
+
 ## Start syncing Folders
 
 Run `vagrant unison-sync-once` to run a single, non-interactive sync and then exit.
 
+Run `vagrant unison-sync-polling` to start in bidirect monitor (repeat) mode - every second unison checks for changes on either side and syncs them.
+
+## (Legacy) Sync using OSX inotify events
+
 Run `vagrant unison-sync` to sync then start watching the local_folder for changes, and syncing these to your vagrang VM.
 
-Under the covers this uses your system installation of [Unison](http://www.cis.upenn.edu/~bcpierce/unison/), 
-which must be installed in your path.
+This uses the `watch` ruby gem and runs a one-off unison sync when it gets change events.
 
-## Start syncing Folders with polling (unison repeat mode)
-
-Run `vagrant unison-sync-polling` to start in bidirect monitor (repeat) mode - every second unison checks for changes on either side and syncs them.
+For some reason, this does not always get all the events immediately which can be frustrating. Since the polling mode (unison repeat mode) is not too resource intensive, I recommend that instead.
 
 ## Sync in interactive mode
 
@@ -56,6 +58,12 @@ This is a useful tool when the automatic sync sees a change in a file on both
 sides and skips it.
 
 ## Cleanup unison database
+Run `vagrant unison-cleanup` to clear the unison metadata from `~/Library/Application Support/Unison/` as well as all files.
+
+## Error states
+
+### Inconsistent state with unison metadata
+
 When you get
 ```
 Fatal error: Warning: inconsistent state.  
@@ -67,8 +75,22 @@ Please delete archive files as appropriate and try again
 or invoke Unison with -ignorearchives flag.
 ```
 
-Run `vagrant unison-cleanup` to clear Archive from ~/Library/Application Support/Unison/ and files from host folder.
+You should run a unison-cleanup
+
 Running Unison with -ignorearchives flag is a bad idea, since it will produce conflicts.
+
+### Skipping files changed on both sides
+
+This is most often caused in my experience by files that get changed by different users with different permissions.
+
+For instance, if you're running an Ubuntu VM then the unison process is running
+as the vagrant user. If you have the unison synced folder loaded as a volume in
+a docker container and a new file gets created in the container, the vagrant
+user in the VM won't own that file and this can keep unison from being able to
+sync the file. (I'm looking for a way to fix this particular error case).
+
+Running a unison-cleanup should fix this state.
+
 
 ## Development
 

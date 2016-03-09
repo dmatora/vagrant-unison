@@ -110,7 +110,7 @@ module VagrantPlugins
             command.terse = true
             command = command.to_s
 
-            # @env.ui.info "Running #{command}"
+            @env.ui.info "Running #{command}"
 
             # Re-run on a crash.
             # On a sigint, wait 2 seconds before respawning command.
@@ -144,7 +144,7 @@ module VagrantPlugins
         unison_mem_cap_mb = 100
         Thread.new(ssh_command.ssh, unison_mem_cap_mb) do |ssh_command_text, mem_cap_mb|
           while true
-            sleep 2
+            sleep 15
             total_mem = `#{ssh_command_text} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
             _unison_proc_returnval = `#{ssh_command_text} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
             if _unison_proc_returnval == ''

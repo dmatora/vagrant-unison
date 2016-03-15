@@ -8,7 +8,7 @@ module VagrantPlugins
       def ssh
         %W(
           ssh
-          #{@machine.config.unison.ssh_user}@#{@machine.config.unison.ssh_ip}
+          #{@machine.config.unison.ssh_user}@#{@machine.config.unison.ssh_host}
           #{ssh_args}
         ).compact.join(' ')
       end
@@ -25,7 +25,7 @@ module VagrantPlugins
 
       def uri(unison_paths)
         username = @machine.config.unison.ssh_user
-        host = @machine.config.unison.ssh_ip
+        host = @machine.config.unison.ssh_host
 
         "ssh://#{username}@#{host}/#{unison_paths.guest}"
       end

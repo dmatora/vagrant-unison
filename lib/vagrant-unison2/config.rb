@@ -23,10 +23,15 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :repeat
 
-      # SSH ip.
+      # SSH host.
       #
       # @return [String]
-      attr_accessor :ssh_ip
+      attr_accessor :ssh_host
+
+      # SSH port.
+      #
+      # @return [String]
+      attr_accessor :ssh_port
 
       # SSH user.
       #
@@ -38,9 +43,9 @@ module VagrantPlugins
         @remote_folder = UNSET_VALUE
         @ignore        = UNSET_VALUE
         @repeat        = UNSET_VALUE
-        @ssh_ip        = UNSET_VALUE
-        @ssh_user      = UNSET_VALUE
+        @ssh_host      = UNSET_VALUE
         @ssh_port      = UNSET_VALUE
+        @ssh_user      = UNSET_VALUE
       end
 
       #-------------------------------------------------------------------
@@ -57,13 +62,13 @@ module VagrantPlugins
 
       def finalize!
         # The access keys default to nil
-        @host_folder  = nil          if @host_folder  == UNSET_VALUE
-        @guest_folder = nil          if @guest_folder == UNSET_VALUE
-        @ignore       = nil          if @ignore       == UNSET_VALUE
-        @repeat       = 1            if @repeat       == UNSET_VALUE
-        @ssh_ip       = '127.0.0.1'  if @ssh_ip       == UNSET_VALUE
-        @ssh_user     = 'vagrant'    if @ssh_user     == UNSET_VALUE
-        @ssh_port     = 2222         if @ssh_port     == UNSET_VALUE
+        @host_folder  = nil         if @host_folder  == UNSET_VALUE
+        @guest_folder = nil         if @guest_folder == UNSET_VALUE
+        @ignore       = nil         if @ignore       == UNSET_VALUE
+        @repeat       = 1           if @repeat       == UNSET_VALUE
+        @ssh_host     = '127.0.0.1' if @ssh_host     == UNSET_VALUE
+        @ssh_port     = 2222        if @ssh_port     == UNSET_VALUE
+        @ssh_user     = 'vagrant'   if @ssh_user     == UNSET_VALUE
 
         # Mark that we finalized
         @__finalized = true

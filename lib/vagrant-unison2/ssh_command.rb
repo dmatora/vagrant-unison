@@ -15,7 +15,7 @@ module VagrantPlugins
 
       def ssh_args
         %W(
-          -p 22
+          -p #{@machine.config.unison.ssh_port}
           #{proxy_command}
           -o StrictHostKeyChecking=no
           -o UserKnownHostsFile=/dev/null

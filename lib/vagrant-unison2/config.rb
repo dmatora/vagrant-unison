@@ -40,6 +40,7 @@ module VagrantPlugins
         @repeat        = UNSET_VALUE
         @ssh_ip        = UNSET_VALUE
         @ssh_user      = UNSET_VALUE
+        @ssh_port      = UNSET_VALUE
       end
 
       #-------------------------------------------------------------------
@@ -61,7 +62,8 @@ module VagrantPlugins
         @ignore       = nil          if @ignore       == UNSET_VALUE
         @repeat       = 1            if @repeat       == UNSET_VALUE
         @ssh_ip       = '127.0.0.1'  if @ssh_ip       == UNSET_VALUE
-        @ssh_user     = 'vagrant'    if @repeat       == UNSET_VALUE
+        @ssh_user     = 'vagrant'    if @ssh_user     == UNSET_VALUE
+        @ssh_port     = 2222         if @ssh_port     == UNSET_VALUE
 
         # Mark that we finalized
         @__finalized = true

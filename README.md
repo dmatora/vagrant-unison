@@ -32,6 +32,7 @@ Vagrant.configure("2") do |config|
   config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Ensure you don't have spaces between the commas!
   config.unison.ssh_ip = "10.0.0.1" # default is 127.0.0.1
   config.unison.ssh_user = "deploy" # default is vagrant
+  config.unison.ssh_port = 22 # default is 2222
 
 end
 ```

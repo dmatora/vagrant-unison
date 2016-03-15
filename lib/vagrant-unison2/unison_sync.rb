@@ -10,7 +10,7 @@ module VagrantPlugins
 
         # Create the guest path
         machine.communicate.sudo("mkdir -p '#{guest_path}'")
-        machine.communicate.sudo("chown #{machine.ssh_info[:username]} '#{guest_path}'")
+        machine.communicate.sudo("chown #{machine.config.unison.ssh_user} '#{guest_path}'")
 
         ssh_command = SshCommand.new(machine)
         shell_command = ShellCommand.new(machine, unison_paths, ssh_command)

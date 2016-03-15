@@ -8,14 +8,14 @@ module VagrantPlugins
       def ssh
         %W(
           ssh
-          vagrant@127.0.0.1
+          #{@machine.config.unison.ssh_user}@#{@machine.config.unison.ssh_ip}
           #{ssh_args}
         ).compact.join(' ')
       end
 
       def ssh_args
         %W(
-          -p #{@machine.ssh_info[:port]}
+          -p 22
           #{proxy_command}
           -o StrictHostKeyChecking=no
           -o UserKnownHostsFile=/dev/null
@@ -24,8 +24,8 @@ module VagrantPlugins
       end
 
       def uri(unison_paths)
-        username = @machine.ssh_info[:username]
-        host = @machine.ssh_info[:host]
+        username = @machine.config.unison.ssh_user
+        host = @machine.config.unison.ssh_ip
 
         "ssh://#{username}@#{host}/#{unison_paths.guest}"
       end

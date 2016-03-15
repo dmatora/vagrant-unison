@@ -15,18 +15,23 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
      * On Mac you can install this with Homebrew:  `brew install unison`
      * On Unix (Ubuntu) install using `sudo apt-get install unison`
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
-1. Install using standard Vagrant 1.1+ plugin installation methods. 
+1. Install using standard Vagrant 1.1+ plugin installation methods.
 ```
-$ vagrant plugin install vagrant-unison
+$ vagrant plugin install vagrant-unison2
 ```
 1. After installing, edit your Vagrantfile and add a configuration directive similar to the below:
 ```
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
+  # Required configs
   config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
   config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
-  config.unison.ignore = "Name {.DS_Store,.git,node_modules}"
+
+  # Optional configs
+  config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Ensure you don't have spaces between the commas!
+  config.unison.ssh_ip = "10.0.0.1" # default is 127.0.0.1
+  config.unison.ssh_user = "deploy" # default is vagrant
 
 end
 ```
@@ -113,7 +118,7 @@ creating a `Vagrantfile` in the top level of this directory (it is gitignored)
 that uses it, and uses bundler to execute Vagrant:
 
 ```
-$ bundle exec vagrant up 
+$ bundle exec vagrant up
 $ bundle exec vagrant unison-sync
 ```
 

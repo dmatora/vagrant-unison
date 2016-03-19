@@ -11,14 +11,17 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
 
 ## Usage
 
-1. You must already have [Unison](http://www.cis.upenn.edu/~bcpierce/unison/) installed on your host and guest machine. It also needs to be in your path.
+1. You must already have [Unison](http://www.cis.upenn.edu/~bcpierce/unison/) installed on your path on your host and guest machines, and it must be the same version of Unison on both.
      * On Mac you can install this with Homebrew:  `brew install unison`
         * This will install unison 2.48.3
-     * On Unix (Ubuntu) install using `sudo apt-get install unison`
-        * This will install an older version of unison. To install unison 2.48.3 do: 
+     * On Ubuntu:
+        * [Xenial (16.04)](https://launchpad.net/ubuntu/xenial/+source/unison): `sudo apt-get install unison`
+        * Ubuntu Trusty (14.04):
             * `sudo add-apt-repository ppa:eugenesan/ppa`
             * `sudo apt-get update`
             * `sudo apt-get install unison=2.48.3-1~eugenesan~trusty1`
+     * Other 64-bit Linux:
+        * Install package from `http://ftp5.gwdg.de/pub/linux/archlinux/extra/os/x86_64/unison-2.48.3-2-x86_64.pkg.tar.xz`. (Install at your own risk, this is a plain http link. If someone knows of a signed version, checksum, or https host let me know so I can update it).
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
 1. Install using standard Vagrant 1.1+ plugin installation methods.
 ```

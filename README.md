@@ -1,9 +1,9 @@
 # Vagrant Unison 2 Plugin
 
-This is a [Vagrant](http://www.vagrantup.com) 1.1+ plugin that syncs files over SSH from a local folder
+This is a [Vagrant](http://www.vagrantup.com) 1.7+ plugin that syncs files over SSH from a local folder
 to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://www.cis.upenn.edu/~bcpierce/unison/)
 
-**NOTE:** This plugin requires Vagrant 1.1+,
+**NOTE:** This plugin requires Vagrant 1.7+,
 
 ## Features
 
@@ -11,16 +11,21 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
 
 ## Usage
 
-1. You must already have [Unison](http://www.cis.upenn.edu/~bcpierce/unison/) installed and in your path.
+1. You must already have [Unison](http://www.cis.upenn.edu/~bcpierce/unison/) installed on your host and guest machine. It also needs to be in your path.
      * On Mac you can install this with Homebrew:  `brew install unison`
+        * This will install unison 2.48.3
      * On Unix (Ubuntu) install using `sudo apt-get install unison`
+        * This will install an older version of unison. To install unison 2.48.3 do: 
+            * `sudo add-apt-repository ppa:eugenesan/ppa`
+            * `sudo apt-get update`
+            * `sudo apt-get install unison=2.48.3-1~eugenesan~trusty1`
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
 1. Install using standard Vagrant 1.1+ plugin installation methods.
 ```
 $ vagrant plugin install vagrant-unison2
 ```
 1. After installing, edit your Vagrantfile and add a configuration directive similar to the below:
-```
+```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "dummy"
 
@@ -88,6 +93,16 @@ or invoke Unison with -ignorearchives flag.
 You should run a unison-cleanup
 
 Running Unison with -ignorearchives flag is a bad idea, since it will produce conflicts.
+
+### Uncaught exception `bad bigarray kind`
+
+The error is:
+```
+Unison failed: Uncaught exception Failure("input_value: bad bigarray kind")
+```
+
+This is caused when the unison on your host and guest were compiled with different versions of ocaml. To fix ensure that
+both are compiled with the same ocaml version. [More Info Here](https://gist.github.com/pch/aa1c9c4ec8522a11193b) 
 
 ### Skipping files changed on both sides
 

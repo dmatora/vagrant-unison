@@ -29,10 +29,14 @@ Vagrant.configure("2") do |config|
   config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
 
   # Optional configs
-  config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Ensure you don't have spaces between the commas!
-  config.unison.ssh_host = "10.0.0.1" # Default is '127.0.0.1'
-  config.unison.ssh_port = 22 # Default is 2222
-  config.unison.ssh_user = "deploy" # Default is 'vagrant'
+  # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
+  config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Default: none
+  # SSH connection details for Vagrant to communicate with VM.
+  config.unison.ssh_host = "10.0.0.1" # Default: '127.0.0.1'
+  config.unison.ssh_port = 22 # Default: 2222
+  config.unison.ssh_user = "deploy" # Default: 'vagrant'
+  # `vagrant unison-sync-polling` command will restart unison in VM if memory usage gets above this threshold (in MB).
+  config.unison.mem_cap_mb = 500 # Default: 200
 
 end
 ```

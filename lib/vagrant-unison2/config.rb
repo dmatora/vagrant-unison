@@ -38,27 +38,22 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :ssh_user
 
+      # Memory usage cap in MB
+      # Restart Unison in the VM when it's consuming more than this
+      # amount of memory (in MB)
+      # @return [int]
+      attr_accessor :mem_cap_mb
+
       def initialize(region_specific=false)
         @host_folder   = UNSET_VALUE
-        @remote_folder = UNSET_VALUE
+        @guest_folder  = UNSET_VALUE
         @ignore        = UNSET_VALUE
         @repeat        = UNSET_VALUE
         @ssh_host      = UNSET_VALUE
         @ssh_port      = UNSET_VALUE
         @ssh_user      = UNSET_VALUE
+        @mem_cap_mb    = UNSET_VALUE
       end
-
-      #-------------------------------------------------------------------
-      # Internal methods.
-      #-------------------------------------------------------------------
-
-      # def merge(other)
-      #   super.tap do |result|
-      #     # TODO - do something sensible; current last config wins
-      #     result.local_folder = other.local_folder
-      #     result.remote_folder = other.remote_folder
-      #   end
-      # end
 
       def finalize!
         # The access keys default to nil
@@ -69,6 +64,7 @@ module VagrantPlugins
         @ssh_host     = '127.0.0.1' if @ssh_host     == UNSET_VALUE
         @ssh_port     = 2222        if @ssh_port     == UNSET_VALUE
         @ssh_user     = 'vagrant'   if @ssh_user     == UNSET_VALUE
+        @mem_cap_mb   = 200         if @mem_cap_mb   == UNSET_VALUE
 
         # Mark that we finalized
         @__finalized = true

@@ -24,30 +24,34 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
         * Install package from `http://ftp5.gwdg.de/pub/linux/archlinux/extra/os/x86_64/unison-2.48.3-2-x86_64.pkg.tar.xz`. (Install at your own risk, this is a plain http link. If someone knows of a signed version, checksum, or https host let me know so I can update it).
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
 1. Install using standard Vagrant 1.1+ plugin installation methods.
-```
-$ vagrant plugin install vagrant-unison2
-```
+
+  ```
+  $ vagrant plugin install vagrant-unison2
+  ```
+
 1. After installing, edit your Vagrantfile and add a configuration directive similar to the below:
-```ruby
-Vagrant.configure("2") do |config|
-  config.vm.box = "dummy"
 
-  # Required configs
-  config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
-  config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
+  ```ruby
+  Vagrant.configure("2") do |config|
+    config.vm.box = "dummy"
 
-  # Optional configs
-  # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
-  config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Default: none
-  # SSH connection details for Vagrant to communicate with VM.
-  config.unison.ssh_host = "10.0.0.1" # Default: '127.0.0.1'
-  config.unison.ssh_port = 22 # Default: 2222
-  config.unison.ssh_user = "deploy" # Default: 'vagrant'
-  # `vagrant unison-sync-polling` command will restart unison in VM if memory usage gets above this threshold (in MB).
-  config.unison.mem_cap_mb = 500 # Default: 200
+    # Required configs
+    config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
+    config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
 
-end
-```
+    # Optional configs
+    # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
+    config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Default: none
+    # SSH connection details for Vagrant to communicate with VM.
+    config.unison.ssh_host = "10.0.0.1" # Default: '127.0.0.1'
+    config.unison.ssh_port = 22 # Default: 2222
+    config.unison.ssh_user = "deploy" # Default: 'vagrant'
+    config.unison.perms = 0 # Use only if you get a props errors. See error section below
+    # `vagrant unison-sync-polling` command will restart unison in VM if memory usage gets above this threshold (in MB).
+    config.unison.mem_cap_mb = 500 # Default: 200
+
+  end
+  ```
 1. Start up your starting your vagrant box as normal (eg: `vagrant up`)
 
 
@@ -105,7 +109,7 @@ Unison failed: Uncaught exception Failure("input_value: bad bigarray kind")
 ```
 
 This is caused when the unison on your host and guest were compiled with different versions of ocaml. To fix ensure that
-both are compiled with the same ocaml version. [More Info Here](https://gist.github.com/pch/aa1c9c4ec8522a11193b) 
+both are compiled with the same ocaml version. [More Info Here](https://gist.github.com/pch/aa1c9c4ec8522a11193b)
 
 ### Skipping files changed on both sides
 
@@ -118,6 +122,22 @@ user in the VM won't own that file and this can keep unison from being able to
 sync the file. (I'm looking for a way to fix this particular error case).
 
 Running a unison-cleanup should fix this state.
+
+### Properties changed on both sides
+
+The error is:
+```
+Synchronization complete at 13:00:33  (0 item transferred, 1 skipped, 0 failed)
+  skipped:  (properties changed on both sides)
+props    <-?-> props      /
+```
+
+This can be caused by file permissions being synced. If you get this error set
+the perms arg to 0. [Perms Documentation](http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#perms)
+
+```
+config.unison.perms = 0
+```
 
 
 ## Development

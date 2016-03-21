@@ -31,6 +31,7 @@ module VagrantPlugins
           terse_arg,
           repeat_arg,
           ignore_arg,
+          perms_arg,
           ['-sshargs', %("#{@ssh_command.ssh_args}")],
         ].flatten.compact
         _args
@@ -42,6 +43,10 @@ module VagrantPlugins
 
       def ignore_arg
         ['-ignore', %("#{@machine.config.unison.ignore}")] if @machine.config.unison.ignore
+      end
+
+      def perms_arg
+        ['-perms', @machine.config.unison.perms] if @machine.config.unison.perms
       end
 
       def repeat_arg

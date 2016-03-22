@@ -19,6 +19,7 @@ module VagrantPlugins
           #{proxy_command}
           -o StrictHostKeyChecking=no
           -o UserKnownHostsFile=/dev/null
+          -o IdentitiesOnly=yes
           #{key_paths}
         ).compact.join(' ')
       end

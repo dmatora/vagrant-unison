@@ -23,13 +23,15 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
      * Other 64-bit Linux:
         * Install package from `http://ftp5.gwdg.de/pub/linux/archlinux/extra/os/x86_64/unison-2.48.3-2-x86_64.pkg.tar.xz`. (Install at your own risk, this is a plain http link. If someone knows of a signed version, checksum, or https host let me know so I can update it).
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
-1. Install using standard Vagrant 1.1+ plugin installation methods.
 
-  ```
-  $ vagrant plugin install vagrant-unison2
-  ```
+2. Install using standard Vagrant 1.1+ plugin installation methods.
+    * `vagrant plugin install vagrant-unison2`
 
-1. After installing, edit your Vagrantfile and add a configuration directive similar to the below:
+3. Configure unison in your Vagrantfile, as shown below.
+
+4. Start your vagrant box as normal (eg: `vagrant up`)
+
+## Configuration
 
   ```ruby
   Vagrant.configure("2") do |config|
@@ -37,7 +39,7 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
 
     # Required configs
     config.unison.host_folder = "src/"  #relative to the folder your Vagrantfile is in
-    config.unison.guest_folder = "src/" #relative to the vagrant home folder -> /home/vagrant
+    config.unison.guest_folder = "src/" #relative to the vagrant home folder (e.g. /home/vagrant)
 
     # Optional configs
     # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
@@ -46,13 +48,13 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
     config.unison.ssh_host = "10.0.0.1" # Default: '127.0.0.1'
     config.unison.ssh_port = 22 # Default: 2222
     config.unison.ssh_user = "deploy" # Default: 'vagrant'
-    config.unison.perms = 0 # Use only if you get a props errors. See error section below
-    # `vagrant unison-sync-polling` command will restart unison in VM if memory usage gets above this threshold (in MB).
+    config.unison.perms = 0 # if you get "properties changed on both sides" error 
+    # `vagrant unison-sync-polling` command will restart unison in VM if memory
+    # usage gets above this threshold (in MB).
     config.unison.mem_cap_mb = 500 # Default: 200
 
   end
   ```
-1. Start up your starting your vagrant box as normal (eg: `vagrant up`)
 
 
 ## Start syncing Folders
@@ -133,11 +135,9 @@ props    <-?-> props      /
 ```
 
 This can be caused by file permissions being synced. If you get this error set
-the perms arg to 0. [Perms Documentation](http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#perms)
+the perms arg to 0 as in the [example configuration](#configuration).
 
-```
-config.unison.perms = 0
-```
+See [perms documentation](http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#perms) for more info.
 
 
 ## Development

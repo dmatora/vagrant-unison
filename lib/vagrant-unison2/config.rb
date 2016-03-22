@@ -71,6 +71,7 @@ module VagrantPlugins
         @ssh_port     = 2222        if @ssh_port     == UNSET_VALUE
         @ssh_user     = 'vagrant'   if @ssh_user     == UNSET_VALUE
         @mem_cap_mb   = 200         if @mem_cap_mb   == UNSET_VALUE
+        @perms        = nil         if @perms        == UNSET_VALUE
 
         # Mark that we finalized
         @__finalized = true

@@ -44,6 +44,11 @@ module VagrantPlugins
       # @return [int]
       attr_accessor :mem_cap_mb
 
+      # perms arg value
+      #
+      # @return [int]
+      attr_accessor :perms
+
       def initialize(region_specific=false)
         @host_folder   = UNSET_VALUE
         @guest_folder  = UNSET_VALUE
@@ -53,6 +58,7 @@ module VagrantPlugins
         @ssh_port      = UNSET_VALUE
         @ssh_user      = UNSET_VALUE
         @mem_cap_mb    = UNSET_VALUE
+        @perms         = UNSET_VALUE
       end
 
       def finalize!

@@ -22,7 +22,7 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
             * `sudo apt-get install unison=2.48.3-1~eugenesan~trusty1`
      * Other 64-bit Linux:
         * Install package from `http://ftp5.gwdg.de/pub/linux/archlinux/extra/os/x86_64/unison-2.48.3-2-x86_64.pkg.tar.xz`. (Install at your own risk, this is a plain http link. If someone knows of a signed version, checksum, or https host let me know so I can update it).
-     * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.
+     * On Windows, download [2.48.3](http://www.pps.univ-paris-diderot.fr/~vouillon/unison/unison 2.48.3.zip), unzip, rename `unison-2.48.3 text.exe` to `unison.exe` and copy to somewhere in your path. Alternatively, install [using Chocolatey](https://chocolatey.org/packages/unison).
 
 2. Install using standard Vagrant 1.1+ plugin installation methods.
     * `vagrant plugin install vagrant-unison2`

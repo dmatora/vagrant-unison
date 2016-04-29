@@ -16,22 +16,12 @@ module VagrantPlugins
       name "Unison"
       description <<-DESC
       This plugin syncs files over SSH from a local folder
-      to your Vagrant VM (local or on AWS). 
+      to your Vagrant VM (local or on AWS).
       DESC
 
       config "unison" do
         require_relative "config"
         Config
-      end
-
-      command "unison-sync" do
-        # Setup logging and i18n
-        setup_logging
-        setup_i18n
-
-        #Return the command
-        require_relative "command"
-        Command
       end
 
       command "unison-sync-once" do

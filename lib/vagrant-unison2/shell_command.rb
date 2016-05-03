@@ -42,7 +42,16 @@ module VagrantPlugins
       end
 
       def ignore_arg
-        ['-ignore', %("#{@machine.config.unison.ignore}")] if @machine.config.unison.ignore
+        patterns = []
+        if @machine.config.unison.ignore.is_a? ::Array
+          patterns = patterns + @machine.config.unison.ignore
+        elsif @machine.config.unison.ignore
+          patterns << @machine.config.unison.ignore
+        end
+
+        patterns.map do |pattern|
+          ['-ignore', %("#{pattern}")]
+        end
       end
 
       def perms_arg

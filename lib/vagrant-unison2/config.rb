@@ -15,7 +15,7 @@ module VagrantPlugins
 
       # Pattern of files to ignore.
       #
-      # @return [String]
+      # @return [String, Array<String>]
       attr_accessor :ignore
 
       # Repeat speed.

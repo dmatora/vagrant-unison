@@ -44,15 +44,19 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
     # Optional configs
     # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
     config.unison.ignore = "Name {.DS_Store,.git,node_modules}" # Default: none
+
     # SSH connection details for Vagrant to communicate with VM.
     config.unison.ssh_host = "10.0.0.1" # Default: '127.0.0.1'
     config.unison.ssh_port = 22 # Default: 2222
     config.unison.ssh_user = "deploy" # Default: 'vagrant'
     config.unison.perms = 0 # if you get "properties changed on both sides" error 
+
     # `vagrant unison-sync-polling` command will restart unison in VM if memory
     # usage gets above this threshold (in MB).
     config.unison.mem_cap_mb = 500 # Default: 200
 
+    # Change polling interval (in seconds) at which to sync changes
+    config.unison.repeat = 5 # Default: 1
   end
   ```
 

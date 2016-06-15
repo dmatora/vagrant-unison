@@ -19,7 +19,7 @@ to your Vagrant VM (local or on AWS).  Under the covers it uses [Unison](http://
         * Ubuntu Trusty (14.04):
             * `sudo add-apt-repository ppa:eugenesan/ppa`
             * `sudo apt-get update`
-            * `sudo apt-get install unison=2.48.3-1~eugenesan~trusty1`
+            * `sudo apt-get install unison=2.48.3-1ubuntu1.02~eugenesan~trusty2`
      * Other 64-bit Linux:
         * Install package from `http://ftp5.gwdg.de/pub/linux/archlinux/extra/os/x86_64/unison-2.48.3-2-x86_64.pkg.tar.xz`. (Install at your own risk, this is a plain http link. If someone knows of a signed version, checksum, or https host let me know so I can update it).
      * On Windows, download [2.40.102](http://alan.petitepomme.net/unison/assets/Unison-2.40.102.zip), unzip, rename `Unison-2.40.102 Text.exe` to `unison.exe` and copy to somewhere in your path.

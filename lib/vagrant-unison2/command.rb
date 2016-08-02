@@ -78,7 +78,9 @@ module VagrantPlugins
           while true
             sleep 15
             total_mem = `#{ssh_command_text} 'free -m | egrep "^Mem:" | awk "{print \\$2}"' 2>/dev/null`
-            _unison_proc_returnval = `#{ssh_command_text} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
+            _unison_proc_returnval = (
+              `#{ssh_command_text} 'ps aux | grep "[u]nison -server" | awk "{print \\$2, \\$4}"' 2>/dev/null`
+            )
             if _unison_proc_returnval == ''
               puts "Unison not running in VM"
               next

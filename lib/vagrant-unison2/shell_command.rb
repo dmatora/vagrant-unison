@@ -1,7 +1,7 @@
 module VagrantPlugins
   module Unison
     class ShellCommand
-      def initialize machine, unison_paths, ssh_command
+      def initialize(machine, unison_paths, ssh_command)
         @machine = machine
         @unison_paths = unison_paths
         @ssh_command = ssh_command
@@ -44,7 +44,7 @@ module VagrantPlugins
       def ignore_arg
         patterns = []
         if @machine.config.unison.ignore.is_a? ::Array
-          patterns = patterns + @machine.config.unison.ignore
+          patterns += @machine.config.unison.ignore
         elsif @machine.config.unison.ignore
           patterns << @machine.config.unison.ignore
         end

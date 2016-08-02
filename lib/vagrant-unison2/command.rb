@@ -12,6 +12,10 @@ module VagrantPlugins
     class CommandOnce < Vagrant.plugin("2", :command)
       include UnisonSync
 
+      def self.synopsis
+        "sync the unison shared folder once"
+      end
+
       def execute
         with_target_vms do |machine|
           execute_sync_command(machine) do |command|
@@ -33,6 +37,10 @@ module VagrantPlugins
     class CommandPolling < Vagrant.plugin("2", :command)
       include UnisonSync
       attr_accessor :bg_thread
+
+      def self.synopsis
+        "sync the unison shared folder forever, by polling for changes"
+      end
 
       def execute
         with_target_vms do |machine|
@@ -99,7 +107,9 @@ module VagrantPlugins
     end
 
     class CommandCleanup < Vagrant.plugin("2", :command)
-      include UnisonSync
+      def self.synopsis
+        "remove all unison supporting state on local and remote system"
+      end
 
       def execute
         with_target_vms do |machine|
@@ -124,6 +134,10 @@ module VagrantPlugins
 
     class CommandInteract < Vagrant.plugin("2", :command)
       include UnisonSync
+
+      def self.synopsis
+        "run unison in interactive mode, to resolve conflicts"
+      end
 
       def execute
         with_target_vms do |machine|

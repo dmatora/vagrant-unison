@@ -17,6 +17,7 @@ module VagrantPlugins
       end
 
       def execute
+        status = nil
         with_target_vms do |machine|
           execute_sync_command(machine) do |command|
             command.batch = true
@@ -26,11 +27,15 @@ module VagrantPlugins
             @env.ui.info "Running unison once"
             @env.ui.info "    #{command}"
 
-            system(command)
+            status = system(command)
+            @env.ui.info "**** unison exited. success: #{status} ****"
           end
         end
-
-        0
+        if status
+          return 0
+        else
+          return 1
+        end
       end
     end
 
@@ -43,9 +48,9 @@ module VagrantPlugins
       end
 
       def execute
+        status = nil
         with_target_vms do |machine|
           @bg_thread = watch_vm_for_memory_leak(machine)
-
           execute_sync_command(machine) do |command|
             command.repeat = true
             command.terse = true
@@ -63,7 +68,8 @@ module VagrantPlugins
               begin
                 sleep 2 if exit_on_next_sigint
                 exit_on_next_sigint = false
-                system(command)
+                status = system(command)
+                @env.ui.info "**** unison exited. success: #{status} ****"
               rescue Interrupt
                 if exit_on_next_sigint
                   Thread.kill(@bg_thread) if @bg_thread
@@ -77,7 +83,11 @@ module VagrantPlugins
             end
           end
         end
-        0
+        if status
+          return 0
+        else
+          return 1
+        end
       end
 
       def watch_vm_for_memory_leak(machine)

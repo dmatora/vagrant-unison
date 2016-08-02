@@ -49,7 +49,13 @@ module VagrantPlugins
       # @return [int]
       attr_accessor :perms
 
-      def initialize(region_specific=false)
+      # Airlab-specific config option to leave off the Vagrant identity file, so
+      # SSH will just use ssh-agent
+      #
+      # @return [Boolean]
+      attr_accessor :ssh_use_agent
+
+      def initialize(region_specific = false)
         @host_folder   = UNSET_VALUE
         @guest_folder  = UNSET_VALUE
         @ignore        = UNSET_VALUE
@@ -57,6 +63,7 @@ module VagrantPlugins
         @ssh_host      = UNSET_VALUE
         @ssh_port      = UNSET_VALUE
         @ssh_user      = UNSET_VALUE
+        @ssh_use_agent = UNSET_VALUE
         @mem_cap_mb    = UNSET_VALUE
         @perms         = UNSET_VALUE
       end
@@ -72,6 +79,7 @@ module VagrantPlugins
         @ssh_user     = 'vagrant'   if @ssh_user     == UNSET_VALUE
         @mem_cap_mb   = 200         if @mem_cap_mb   == UNSET_VALUE
         @perms        = nil         if @perms        == UNSET_VALUE
+        @ssh_use_agent = false      if @ssh_use_agent == UNSET_VALUE
 
         # Mark that we finalized
         @__finalized = true

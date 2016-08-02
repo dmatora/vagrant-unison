@@ -19,8 +19,7 @@ module VagrantPlugins
           #{proxy_command}
           -o StrictHostKeyChecking=no
           -o UserKnownHostsFile=/dev/null
-          -o IdentitiesOnly=yes
-          #{key_paths}
+          #{identity}
         ).compact.join(' ')
       end
 
@@ -39,8 +38,16 @@ module VagrantPlugins
         "-o ProxyCommand='#{command}'"
       end
 
+      def identity
+        if @machine.config.unison.ssh_use_agent
+          ''
+        else
+          (%w(-o IdentitiesOnly=yes) <<  key_paths).join(' ')
+        end
+      end
+
       def key_paths
-        @machine.ssh_info[:private_key_path].map { |p| "-i #{p}" }.join(' ')
+        @machine.ssh_info[:private_key_path].map { |p| "-i #{p.shellescape}" }.join(' ')
       end
     end
   end

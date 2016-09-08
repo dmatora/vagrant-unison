@@ -16,45 +16,24 @@ module VagrantPlugins
       name "Unison"
       description <<-DESC
       This plugin syncs files over SSH from a local folder
-      to your Vagrant VM (local or on AWS). 
+      to your Vagrant VM (local or on AWS).
       DESC
 
-      config "sync" do
+      config "unison" do
         require_relative "config"
         Config
       end
 
-      command "sync" do
-        # Setup logging and i18n
+      command "unison-sync-once" do
         setup_logging
         setup_i18n
 
         #Return the command
         require_relative "command"
-        Command
+        CommandOnce
       end
 
-      command "sync-repeat" do
-        # Setup logging and i18n
-        setup_logging
-        setup_i18n
-
-        #Return the command
-        require_relative "command"
-        CommandRepeat
-      end
-
-      command "sync-cleanup" do
-        # Setup logging and i18n
-        setup_logging
-        setup_i18n
-
-        #Return the command
-        require_relative "command"
-        CommandCleanup
-      end
-
-      command "sync-interact" do
+      command "unison-sync-interact" do
         # Setup logging and i18n
         setup_logging
         setup_i18n
@@ -62,6 +41,27 @@ module VagrantPlugins
         #Return the command
         require_relative "command"
         CommandInteract
+      end
+
+
+      command "unison-sync-polling" do
+        # Setup logging and i18n
+        setup_logging
+        setup_i18n
+
+        #Return the command
+        require_relative "command"
+        CommandPolling
+      end
+
+      command "unison-cleanup" do
+        # Setup logging and i18n
+        setup_logging
+        setup_i18n
+
+        #Return the command
+        require_relative "command"
+        CommandCleanup
       end
 
       # This initializes the internationalization strings.
@@ -92,7 +92,7 @@ module VagrantPlugins
         # Set the logging level on all "vagrant" namespaced
         # logs as long as we have a valid level.
         if level
-          logger = Log4r::Logger.new("vagrant_sync")
+          logger = Log4r::Logger.new("vagrant_unison")
           logger.outputters = Log4r::Outputter.stderr
           logger.level = level
           logger = nil

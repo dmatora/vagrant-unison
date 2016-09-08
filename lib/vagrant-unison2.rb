@@ -1,7 +1,7 @@
 require "pathname"
 
-require "vagrant-unison/plugin"
-require "vagrant-unison/errors"
+require "vagrant-unison2/plugin"
+require "vagrant-unison2/errors"
 
 module VagrantPlugins
   module Unison

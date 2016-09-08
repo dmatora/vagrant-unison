@@ -1,20 +1,17 @@
 $:.unshift File.expand_path("../lib", __FILE__)
-require "vagrant-unison/version"
+require "vagrant-unison2/version"
 
 Gem::Specification.new do |s|
-  s.name          = "vagrant-unison"
+  s.name          = "vagrant-unison2"
   s.version       = VagrantPlugins::Unison::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.authors       = "David Laing"
-  s.email         = "david@davidlaing.com"
-  s.homepage      = "http://github.com/mrdavidlaing/vagrant-unison"
-  s.summary       = "Vagrant 1.1 plugin to sync local files to VM over SSH"
-  s.description   = "Vagrant 1.1 plugin to sync local files to VM over SSH using Unison"
+  s.authors       = ["David Laing", "dmatora", "Danny Cosson"]
+  s.email         = "dcosson@gmail.com"
+  s.homepage      = "http://github.com/dcosson/vagrant-unison"
+  s.summary       = "Vagrant 1.7+ plugin to sync local files to VM over SSH using Unison"
+  s.description   = "Vagrant 1.7+ plugin to sync local files to VM over SSH using Unison"
 
   s.required_rubygems_version = ">= 1.3.6"
-
-  s.add_runtime_dependency "listen", ">= 0.7.3"
-  s.add_runtime_dependency "rb-fsevent", "~> 0.9"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-core", "~> 2.12.2"
